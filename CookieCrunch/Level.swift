@@ -26,58 +26,45 @@
 /// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 /// THE SOFTWARE.
 
-import SpriteKit
+import Foundation
 
-// MARK: - CookieType
-enum CookieType: Int {
-  case unknown = 0, croissant, cupcake, danish, donut, macaroon, sugarCookie
-  var spriteName: String {
-    let spriteNames = [
-      "Croissant",
-      "Cupcake",
-      "Danish",
-      "Donut",
-      "Macaroon",
-      "SugarCookie"]
+let numColumns = 9
+let numRows = 9
+
+class Level {
+  private var cookies = Array2D<Cookie>(columns: numColumns, rows: numRows)
+  
+  func cookie(atColumn column: Int, row: Int) -> Cookie? {
+    precondition(column >= 0 && column < numColumns)
+    precondition(row >= 0 && row < numRows)
+    return cookies[column, row]
+  }
+  
+  func shuffle() -> Set<Cookie> {
+    return createInitialCookies()
+  }
+  
+  private func createInitialCookies() -> Set<Cookie> {
+    var set: Set<Cookie> = []
     
-    return spriteNames[rawValue - 1]
-  }
-  
-  var highlightedSpriteName: String {
-    return spriteName + "-Highlighted"
-  }
-  
-  static func random() -> CookieType {
-    return CookieType(rawValue: Int(arc4random_uniform(6)) + 1)!
+    // 1
+    for row in 0..<numRows {
+      for column in 0..<numColumns {
+        
+        // 2
+        let cookieType = CookieType.random()
+        
+        // 3
+        let cookie = Cookie(column: column, row: row, cookieType: cookieType)
+        cookies[column, row] = cookie
+        
+        // 4
+        set.insert(cookie)
+      }
+    }
+    return set
   }
 
 
 }
 
-// MARK: - Cookie
-class Cookie: CustomStringConvertible, Hashable {
-  
-  var hashValue: Int {
-    return row * 10 + column
-  }
-  
-  static func ==(lhs: Cookie, rhs: Cookie) -> Bool {
-    return lhs.column == rhs.column && lhs.row == rhs.row
-    
-  }
-  
-  var description: String {
-    return "type:\(cookieType) square:(\(column),\(row))"
-  }
-  
-  var column: Int
-  var row: Int
-  let cookieType: CookieType
-  var sprite: SKSpriteNode?
-  
-  init(column: Int, row: Int, cookieType: CookieType) {
-    self.column = column
-    self.row = row
-    self.cookieType = cookieType
-  }
-}
