@@ -31,6 +31,22 @@ import SpriteKit
 // MARK: - CookieType
 enum CookieType: Int {
   case unknown = 0, croissant, cupcake, danish, donut, macaroon, sugarCookie
+  var spriteName: String {
+    let spriteNames = [
+      "Croissant",
+      "Cupcake",
+      "Danish",
+      "Donut",
+      "Macaroon",
+      "SugarCookie"]
+    
+    return spriteNames[rawValue - 1]
+  }
+  
+  var highlightedSpriteName: String {
+    return spriteName + "-Highlighted"
+  }
+
 }
 
 // MARK: - Cookie
