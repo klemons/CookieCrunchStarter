@@ -56,6 +56,9 @@ class GameScene: SKScene {
   private var swipeFromRow: Int?
   
   var swipeHandler: ((Swap) -> Void)?
+  
+  private var selectionSprite = SKSpriteNode()
+
 
 
 
@@ -172,6 +175,8 @@ class GameScene: SKScene {
     if success {
       // 3
       if let cookie = level.cookie(atColumn: column, row: row) {
+        showSelectionIndicator(of: cookie)
+
         // 4
         swipeFromColumn = column
         swipeFromRow = row
@@ -205,7 +210,8 @@ class GameScene: SKScene {
       // 4
       if horizontalDelta != 0 || verticalDelta != 0 {
         trySwap(horizontalDelta: horizontalDelta, verticalDelta: verticalDelta)
-        
+        hideSelectionIndicator()
+
         // 5
         swipeFromColumn = nil
       }
@@ -233,6 +239,10 @@ class GameScene: SKScene {
   }
   
   override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    if selectionSprite.parent != nil && swipeFromColumn != nil {
+      hideSelectionIndicator()
+    }
+
     swipeFromColumn = nil
     swipeFromRow = nil
   }
@@ -262,9 +272,27 @@ class GameScene: SKScene {
     run(swapSound)
   }
 
-
-
-
+  //Highlights the selected cookie
+  func showSelectionIndicator(of cookie: Cookie) {
+    if selectionSprite.parent != nil {
+      selectionSprite.removeFromParent()
+    }
+    
+    if let sprite = cookie.sprite {
+      let texture = SKTexture(imageNamed: cookie.cookieType.highlightedSpriteName)
+      selectionSprite.size = CGSize(width: tileWidth, height: tileHeight)
+      selectionSprite.run(SKAction.setTexture(texture))
+      
+      sprite.addChild(selectionSprite)
+      selectionSprite.alpha = 1.0
+    }
+  }
+  //The opposite
+  func hideSelectionIndicator() {
+    selectionSprite.run(SKAction.sequence([
+      SKAction.fadeOut(withDuration: 0.3),
+      SKAction.removeFromParent()]))
+  }
 
 
   
