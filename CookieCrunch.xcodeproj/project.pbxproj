@@ -31,6 +31,7 @@
 		186E13E12069D3DF003EBCA0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 186E13E02069D3DE003EBCA0 /* LaunchScreen.storyboard */; };
 		7E2FAB63225E21BF00AFB806 /* Cookie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2FAB62225E21BF00AFB806 /* Cookie.swift */; };
 		7E2FAB65225E244300AFB806 /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E2FAB64225E244300AFB806 /* Level.swift */; };
+		7EAFC7C82260C5A50058AA88 /* Swap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EAFC7C72260C5A50058AA88 /* Swap.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		186E13E02069D3DE003EBCA0 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		7E2FAB62225E21BF00AFB806 /* Cookie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cookie.swift; sourceTree = "<group>"; };
 		7E2FAB64225E244300AFB806 /* Level.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		7EAFC7C72260C5A50058AA88 /* Swap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swap.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 				1769DFF81FE3818B00F99A23 /* LevelData.swift */,
 				1769DFFA1FE383BA00F99A23 /* Array2D.swift */,
 				17A7E59C1FB528160044C48F /* Tile.swift */,
+				7EAFC7C72260C5A50058AA88 /* Swap.swift */,
 				17A7E5711FB513CC0044C48F /* AppDelegate.swift */,
 				17A7E57B1FB513CC0044C48F /* Main.storyboard */,
 				186E13E02069D3DE003EBCA0 /* LaunchScreen.storyboard */,
@@ -232,6 +235,7 @@
 				7E2FAB63225E21BF00AFB806 /* Cookie.swift in Sources */,
 				7E2FAB65225E244300AFB806 /* Level.swift in Sources */,
 				17A7E5721FB513CC0044C48F /* AppDelegate.swift in Sources */,
+				7EAFC7C82260C5A50058AA88 /* Swap.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
