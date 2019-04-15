@@ -30,6 +30,8 @@ import Foundation
 
 let numColumns = 9
 let numRows = 9
+let numLevels = 4 // Excluding level 0
+
 
 private var possibleSwaps: Set<Swap> = []
 var targetScore = 0

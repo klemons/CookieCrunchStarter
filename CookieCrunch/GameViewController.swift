@@ -35,12 +35,15 @@ import SpriteKit
 import AVFoundation
 
 var tapGestureRecognizer: UITapGestureRecognizer!
+var currentLevelNumber = 1
 
 
 class GameViewController: UIViewController {
   
   // MARK: Properties
   var tapGestureRecognizer: UITapGestureRecognizer!
+  var currentLevelNumber = 1
+
 
   // The scene draws the tiles and cookie sprites, and handles swipes.
   var scene: GameScene!
@@ -74,7 +77,14 @@ class GameViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    // Configure the view
+    // Setup view with level 1
+    setupLevel(number: currentLevelNumber)
+    
+    // Start the background music.
+    backgroundMusic?.play()
+  }
+  
+  func setupLevel(number levelNumber: Int) {
     let skView = view as! SKView
     skView.isMultipleTouchEnabled = false
     
@@ -82,27 +92,30 @@ class GameViewController: UIViewController {
     scene = GameScene(size: skView.bounds.size)
     scene.scaleMode = .aspectFill
     
-    level = Level(filename: "Level_1")
+    // Setup the level.
+    level = Level(filename: "Level_\(levelNumber)")
     scene.level = level
-
+    
+    scene.addTiles()
     scene.swipeHandler = handleSwipe
     
     gameOverPanel.isHidden = true
-
+    shuffleButton.isHidden = true
     
     // Present the scene.
     skView.presentScene(scene)
     
-    //Adds the "tiles"
-    scene.addTiles()
-    
-    //Starts the game
+    // Start the game.
     beginGame()
-
   }
+
+
   
   // MARK: IBActions
   @IBAction func shuffleButtonPressed(_: AnyObject) {
+    shuffle()
+    decrementMoves()
+
     
   }
   
@@ -126,7 +139,8 @@ class GameViewController: UIViewController {
 
     level.resetComboMultiplier()
 
-    scene.animateBeginGame { }
+    scene.animateBeginGame { self.shuffleButton.isHidden = false
+ }
 
     
     shuffle()
@@ -198,6 +212,7 @@ class GameViewController: UIViewController {
     updateLabels()
     if score >= level.targetScore {
       gameOverPanel.image = UIImage(named: "LevelComplete")
+      currentLevelNumber = currentLevelNumber < numLevels ? currentLevelNumber + 1 : 1
       showGameOver()
     } else if movesLeft == 0 {
       gameOverPanel.image = UIImage(named: "GameOver")
@@ -209,6 +224,8 @@ class GameViewController: UIViewController {
   func showGameOver() {
     gameOverPanel.isHidden = false
     scene.isUserInteractionEnabled = false
+    shuffleButton.isHidden = true
+
     
     scene.animateGameOver {
       self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(self.hideGameOver))
@@ -224,7 +241,8 @@ class GameViewController: UIViewController {
     gameOverPanel.isHidden = true
     scene.isUserInteractionEnabled = true
     
-    beginGame()
+    setupLevel(number: currentLevelNumber)
+
   }
 
 
