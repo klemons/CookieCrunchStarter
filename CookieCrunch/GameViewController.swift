@@ -34,10 +34,14 @@ import UIKit
 import SpriteKit
 import AVFoundation
 
+var tapGestureRecognizer: UITapGestureRecognizer!
+
+
 class GameViewController: UIViewController {
   
   // MARK: Properties
-  
+  var tapGestureRecognizer: UITapGestureRecognizer!
+
   // The scene draws the tiles and cookie sprites, and handles swipes.
   var scene: GameScene!
   
@@ -83,6 +87,9 @@ class GameViewController: UIViewController {
 
     scene.swipeHandler = handleSwipe
     
+    gameOverPanel.isHidden = true
+
+    
     // Present the scene.
     skView.presentScene(scene)
     
@@ -119,6 +126,7 @@ class GameViewController: UIViewController {
 
     level.resetComboMultiplier()
 
+    
     shuffle()
   }
   //Adds in the cookies
@@ -170,6 +178,8 @@ class GameViewController: UIViewController {
   func beginNextTurn() {
     level.detectPossibleSwaps()
     view.isUserInteractionEnabled = true
+    decrementMoves()
+
   }
 
   //Updates score labels
@@ -178,5 +188,38 @@ class GameViewController: UIViewController {
     movesLabel.text = String(format: "%ld", movesLeft)
     scoreLabel.text = String(format: "%ld", score)
   }
+
+  //Subtracts moves
+  func decrementMoves() {
+    movesLeft -= 1
+    updateLabels()
+    if score >= level.targetScore {
+      gameOverPanel.image = UIImage(named: "LevelComplete")
+      showGameOver()
+    } else if movesLeft == 0 {
+      gameOverPanel.image = UIImage(named: "GameOver")
+      showGameOver()
+    }
+
+  }
+  
+  func showGameOver() {
+    gameOverPanel.isHidden = false
+    scene.isUserInteractionEnabled = false
+    
+    self.tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideGameOver))
+    self.view.addGestureRecognizer(self.tapGestureRecognizer)
+  }
+
+  @objc func hideGameOver() {
+    view.removeGestureRecognizer(tapGestureRecognizer)
+    tapGestureRecognizer = nil
+    
+    gameOverPanel.isHidden = true
+    scene.isUserInteractionEnabled = true
+    
+    beginGame()
+  }
+
 
 }
