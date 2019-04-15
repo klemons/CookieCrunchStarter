@@ -113,6 +113,10 @@ class GameViewController: UIViewController {
   }
   
   func beginGame() {
+    movesLeft = level.maximumMoves
+    score = 0
+    updateLabels()
+
     shuffle()
   }
   //Adds in the cookies
@@ -146,6 +150,11 @@ class GameViewController: UIViewController {
     }
 
     scene.animateMatchedCookies(for: chains) {
+      for chain in chains {
+        self.score += chain.score
+      }
+      self.updateLabels()
+
       let columns = self.level.fillHoles()
       self.scene.animateFallingCookies(in: columns) {
         let columns = self.level.topUpCookies()
@@ -159,6 +168,13 @@ class GameViewController: UIViewController {
   func beginNextTurn() {
     level.detectPossibleSwaps()
     view.isUserInteractionEnabled = true
+  }
+
+  //Updates score labels
+  func updateLabels() {
+    targetLabel.text = String(format: "%ld", level.targetScore)
+    movesLabel.text = String(format: "%ld", movesLeft)
+    scoreLabel.text = String(format: "%ld", score)
   }
 
 }

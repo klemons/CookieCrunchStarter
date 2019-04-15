@@ -32,11 +32,15 @@ let numColumns = 9
 let numRows = 9
 
 private var possibleSwaps: Set<Swap> = []
+var targetScore = 0
+var maximumMoves = 0
+
 
 
 class Level {
   private var cookies = Array2D<Cookie>(columns: numColumns, rows: numRows)
-  
+  var targetScore = 0
+  var maximumMoves = 0
   init(filename: String) {
     // 1
     guard let levelData = LevelData.loadFrom(file: filename) else { return }
@@ -53,6 +57,9 @@ class Level {
         }
       }
     }
+    targetScore = levelData.targetScore
+    maximumMoves = levelData.moves
+
   }
 
   
@@ -309,6 +316,9 @@ class Level {
     removeCookies(in: horizontalChains)
     removeCookies(in: verticalChains)
 
+    calculateScores(for: horizontalChains)
+    calculateScores(for: verticalChains)
+
     
     return horizontalChains.union(verticalChains)
   }
@@ -386,6 +396,14 @@ class Level {
       }
     }
     return columns
+  }
+
+  
+  private func calculateScores(for chains: Set<Chain>) {
+    // 3-chain is 60 pts, 4-chain is 120, 5-chain is 180, and so on
+    for chain in chains {
+      chain.score = 60 * (chain.length - 2)
+    }
   }
 
 
